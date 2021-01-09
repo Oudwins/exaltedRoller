@@ -1,6 +1,6 @@
 const express = require('express');
 const morgan = require('morgan');
-
+const http = require('http');
 const routers = require('./routes');
 
 const app = express();
@@ -16,4 +16,4 @@ app.use(express.json());
 // !ROUTERS
 Object.values(routers).forEach((el) => app.use(el.resourceURL, el.router));
 
-module.exports = app;
+module.exports = http.createServer(app);

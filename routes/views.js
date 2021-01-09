@@ -1,9 +1,9 @@
 const express = require('express');
-const controller = require('../controllers/example');
+const controller = require('../controllers/views');
 
 const router = express.Router();
 
 module.exports = {
-  resourceURL: '/api/v1/example',
+  resourceURL: '/',
   router,
 };

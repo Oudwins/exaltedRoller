@@ -1,7 +1,7 @@
 {
-  "name": "temp_express_mvc_env_eslint",
-  "version": "1.0.0",
-  "description": "This is a template for basic nodeJS express app with premade mvc architecture directories, eslint airbnb config and dotenv. Also uses small custom function for automatically importing all files in certain directories",
+  "name": "exaltedRoller",
+  "version": "0.1.0",
+  "description": "This is a exalted 3e roller using socket.io to show each player's rolls in real time",
   "main": "app.js",
   "directories": {
     "lib": "lib"
@@ -13,14 +13,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/oudwin-boilerplate/express-mvc.git"
+    "url": "git+https://github.com/Oudwins/exaltedRoller.git"
   },
   "author": "Oudwins",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/oudwin-boilerplate/express-mvc/issues"
+    "url": "https://github.com/Oudwins/exaltedRoller.git/issues"
   },
-  "homepage": "https://github.com/oudwin-boilerplate/express-mvc#readme",
+  "homepage": "https://github.com/Oudwins/exaltedRoller.git#readme",
   "dependencies": {
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
