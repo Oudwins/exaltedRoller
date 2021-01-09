@@ -1,5 +1,5 @@
 {
-  "name": "exaltedRoller",
+  "name": "exalted_roller",
   "version": "0.1.0",
   "description": "This is a exalted 3e roller using socket.io to show each player's rolls in real time",
   "main": "app.js",
