@@ -1,0 +1,56 @@
+body {
+  height: 100vh;
+}
+
+#app {
+  height: 100vh;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  /* align-content: space-between; */
+}
+
+.msgs-table {
+  max-height: 50vh;
+  /* height: 40vh; */
+  display: -moz-groupbox;
+  position: relative;
+}
+
+.msgs-table tr {
+  width: 100%;
+  display: inline-table;
+  table-layout: fixed;
+}
+
+.msgs-table tbody {
+  max-height: 50vh;
+  overflow-y: scroll;
+  /* height: 40vh; */
+  width: 100%;
+  position: absolute;
+}
+
+.btns {
+  margin-top: auto;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-wrap: wrap;
+      flex-wrap: wrap;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+}
+
+.btns button {
+  display: inline-block;
+  font-size: 1.5rem;
+  padding: 0.2rem 1rem;
+  margin: 0.5rem 0.4rem;
+}
+/*# sourceMappingURL=index.css.map */

@@ -10,6 +10,8 @@ const app = express();
 if (process.env.NODE_ENV === 'development') {
   app.use(morgan('dev'));
 }
+// Public available
+app.use(express.static('public'));
 // access sent json on req.body
 app.use(express.json());
 

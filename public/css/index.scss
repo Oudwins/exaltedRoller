@@ -1,0 +1,41 @@
+body {
+  height: 100vh;
+}
+#app {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  /* align-content: space-between; */
+}
+.msgs-table {
+  max-height: 50vh;
+  /* height: 40vh; */
+  display: -moz-groupbox;
+  position: relative;
+  tr {
+    width: 100%;
+    display: inline-table;
+    table-layout: fixed;
+  }
+
+  tbody {
+    max-height: 50vh;
+    overflow-y: scroll;
+    /* height: 40vh; */
+    width: 100%;
+    position: absolute;
+  }
+}
+
+.btns {
+  margin-top: auto;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  button {
+    display: inline-block;
+    font-size: 1.5rem;
+    padding: 0.2rem 1rem;
+    margin: 0.5rem 0.4rem;
+  }
+}
