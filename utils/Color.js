@@ -26,8 +26,8 @@ class Color {
         user: null,
       },
       {
-        // indigo
-        hex: '#4b0082',
+        // violet
+        hex: '##8A2BE2',
         text: 'black',
         user: null,
       },
