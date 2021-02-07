@@ -906,7 +906,7 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.default = void 0;
-var _default = "\n<main id=\"app\" v-if=\"loading\">\n<div class=\"spinner-border\" role=\"status\" style=\"margin: auto auto; height: 10rem; width:10rem;\">\n  <span class=\"sr-only\" style=\"display:none\">Loading...</span>\n</div>\n</main>   \n<main id=\"app\" v-else>\n      <section class=\"msgs\">\n        <table class=\"table table-sm msgs-table\" >\n          <tbody ref=\"table\">\n            <tr v-for=\"message in messages\" :style=\"{background: message.user.color.hex, color: message.user.color.text}\">\n              <th scope=\"row\">{{message.user.name}}</th>\n              <td colspan=\"2\"> <strong>{{message.text}}<span style=\"color:green;\">{{message.successes !== undefined ? '[' + message.successes + ']' : ''}}</span><span style=\"color:red;\">{{message.fumbles !== undefined ? '[' + message.fumbles + ']' : ''}}</span> </strong>\n              </td>\n              <td>{{message.timeStamp}}</td>\n            </tr>\n          </tbody>\n        </table>\n      </section>\n      <section class=\"btns\">\n        <button type=\"button\" class=\"btn\" :style=\"{color: user.color.text, background: user.color.hex}\" :data-value=\"n\" v-for=\"n in 12\" @click.prevent=\"rollDice\">{{ n < 10 ? '0' + n : n}}</button>\n      </section>\n</main>";
+var _default = "\n<main id=\"app\" v-if=\"loading\">\n<div class=\"spinner-border\" role=\"status\" style=\"margin: auto auto; height: 10rem; width:10rem;\">\n  <span class=\"sr-only\" style=\"display:none\">Loading...</span>\n</div>\n</main>   \n<main id=\"app\" v-else>\n      <section class=\"msgs\">\n        <table class=\"table table-sm msgs-table\" >\n          <tbody ref=\"table\">\n            <tr v-for=\"message in messages\" :style=\"{background: colors[message.user.color].hex, color: colors[message.user.color].text}\">\n              <th scope=\"row\">{{message.user.name}}</th>\n              <td colspan=\"2\"> <strong>{{message.text}}<span style=\"color:green;\">{{message.successes !== undefined ? '[' + message.successes + ']' : ''}}</span><span style=\"color:red;\">{{message.fumbles !== undefined ? '[' + message.fumbles + ']' : ''}}</span> </strong>\n              </td>\n              <td>{{message.timeStamp}}</td>\n            </tr>\n          </tbody>\n        </table>\n      </section>\n      <section class=\"btns\">\n        <button type=\"button\" class=\"btn\" :style=\"{color: colors[user.color].text,background: colors[user.color].hex}\" :data-value=\"n\" v-for=\"n in 12\" @click.prevent=\"rollDice\">{{ n < 10 ? '0' + n : n}}</button>\n      </section>\n</main>";
 exports.default = _default;
 },{}],"methods/newMessage.js":[function(require,module,exports) {
 "use strict";
@@ -918,7 +918,11 @@ exports.default = _default;
 
 function _default(data) {
   var message = {
-    user: data.user,
+    user: {
+      id: data.user.id,
+      name: data.user.name,
+      color: data.user.color
+    },
     timeStamp: data.timeStamp
   };
 
@@ -953,7 +957,7 @@ Object.defineProperty(exports, "__esModule", {
 exports.default = _default;
 
 function _default() {
-  this.loading = false;
+  this.loading = !this.loading;
 }
 },{}],"methods/getUser.js":[function(require,module,exports) {
 "use strict";
@@ -981,6 +985,104 @@ function _default(e) {
     nDice: nDice
   });
 }
+},{}],"methods/getColor.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = _default;
+
+function _default() {
+  return this.colors[this.user.color];
+}
+},{}],"methods/updateUser.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = _default;
+
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
+
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+function _default(user) {
+  this.user = _objectSpread({}, user);
+}
+},{}],"methods/updateMessages.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = _default;
+
+function _default(_ref) {
+  var userId = _ref.userId,
+      _ref$color = _ref.color,
+      color = _ref$color === void 0 ? 0 : _ref$color;
+  var user = null;
+  this.messages.forEach(function (el) {
+    if (el.user.id === userId) {
+      el.user.color = color;
+      if (!user) user = el.user;
+    }
+  });
+  return user;
+}
+},{}],"data/colors.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+var _default = [{
+  // DEFAULT COLOR FOR PEOPLE WHO LEAVE
+  hex: '#fff',
+  text: 'black'
+}, {
+  // BLACK WITH WHITE TEXT (GM)
+  hex: '#0e1111',
+  text: 'white'
+}, {
+  // aqua
+  hex: '#00ffff',
+  text: 'black'
+}, {
+  // brown
+  hex: '#a52a2a',
+  text: 'black'
+}, {
+  // dark grey
+  hex: '#a9a9a9',
+  text: 'black'
+}, {
+  // Lime
+  hex: '#bfff00',
+  text: 'black'
+}, {
+  // violet
+  hex: '##8A2BE2',
+  text: 'black'
+}, {
+  // olive
+  hex: '#808000',
+  text: 'black'
+}, {
+  // Navy
+  hex: '#000080',
+  text: 'black'
+}, {
+  // orange
+  hex: '#ffa500',
+  text: 'black'
+}];
+exports.default = _default;
 },{}],"app.js":[function(require,module,exports) {
 "use strict";
 
@@ -1003,22 +1105,36 @@ var _getUser = _interopRequireDefault(require("./methods/getUser"));
 
 var _rollDice = _interopRequireDefault(require("./methods/rollDice"));
 
+var _getColor = _interopRequireDefault(require("./methods/getColor"));
+
+var _updateUser = _interopRequireDefault(require("./methods/updateUser"));
+
+var _updateMessages = _interopRequireDefault(require("./methods/updateMessages"));
+
+var _colors = _interopRequireDefault(require("./data/colors"));
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 // vue methods
+// colors array
 var socket = io();
 
 var _Qs$parse = _qs.default.parse(window.location.search, {
   ignoreQueryPrefix: true
 }),
     name = _Qs$parse.name,
-    room = _Qs$parse.room;
+    room = _Qs$parse.room,
+    create = _Qs$parse.create;
 
 var data = {
   user: {
+    id: -1,
     name: name,
-    room: room
+    room: room,
+    creator: create,
+    color: -1
   },
+  colors: _colors.default,
   loading: true,
   messages: [],
   socket: socket
@@ -1032,7 +1148,10 @@ var vm = new Vue({
     toggleLoading: _toggleLoading.default,
     setColor: _setColor.default,
     getUser: _getUser.default,
-    rollDice: _rollDice.default
+    rollDice: _rollDice.default,
+    getColor: _getColor.default,
+    updateUser: _updateUser.default,
+    updateMessages: _updateMessages.default
   },
   updated: function updated() {
     // scroll down to last messages
@@ -1043,7 +1162,7 @@ var vm = new Vue({
 });
 var _default = vm;
 exports.default = _default;
-},{"qs":"../../node_modules/qs/lib/index.js","./htmlTemplate":"htmlTemplate.js","./methods/newMessage":"methods/newMessage.js","./methods/setColor":"methods/setColor.js","./methods/toggleLoading":"methods/toggleLoading.js","./methods/getUser":"methods/getUser.js","./methods/rollDice":"methods/rollDice.js"}],"index.js":[function(require,module,exports) {
+},{"qs":"../../node_modules/qs/lib/index.js","./htmlTemplate":"htmlTemplate.js","./methods/newMessage":"methods/newMessage.js","./methods/setColor":"methods/setColor.js","./methods/toggleLoading":"methods/toggleLoading.js","./methods/getUser":"methods/getUser.js","./methods/rollDice":"methods/rollDice.js","./methods/getColor":"methods/getColor.js","./methods/updateUser":"methods/updateUser.js","./methods/updateMessages":"methods/updateMessages.js","./data/colors":"data/colors.js"}],"index.js":[function(require,module,exports) {
 "use strict";
 
 var _app = _interopRequireDefault(require("./app"));
@@ -1051,23 +1170,77 @@ var _app = _interopRequireDefault(require("./app"));
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 // !ON
-// joining
-_app.default.socket.on('joined', function (data) {
+// ! User Actions
+function joinRoom(data) {
+  _app.default.updateUser(data.user);
+
+  window.history.replaceState(null, "D10 Roller - Room ".concat(_app.default.getUser().room), "/rooms?room=".concat(_app.default.getUser().room, "&name=").concat(_app.default.getUser().name));
+
+  _app.default.setColor(data.user.color);
+
   _app.default.toggleLoading();
 
   _app.default.newMessage(data);
+} // created
+
+
+_app.default.socket.on('roomCreated', joinRoom); // You joined
+
+
+_app.default.socket.on('youJoined', joinRoom); // You changeColor
+
+
+_app.default.socket.on('changeColor', function (color) {
+  _app.default.setColor(color);
+
+  _app.default.updateMessages({
+    color: color,
+    userId: _app.default.getUser().id
+  });
+}); //! Others Actions
+// Someone Joined
+
+
+_app.default.socket.on('some1Joined', _app.default.newMessage);
+
+_app.default.socket.on('new_roll', _app.default.newMessage); // handling User Disconnects
+
+
+_app.default.socket.on('userDisconnected', function (data) {
+  // set color of messages of person who left to standard color
+  var user = _app.default.updateMessages({
+    userId: data.id
+  });
+
+  _app.default.newMessage({});
+
+  _app.default.socket.emit('colorReset', _app.default.getUser());
 });
 
-_app.default.socket.on('color', function (data) {
-  _app.default.setColor(data);
+_app.default.socket.on('some1ChangeColor', function (data) {
+  _app.default.updateMessages({
+    color: data.color,
+    userId: data.id
+  });
 });
 
-_app.default.socket.on('new_roll', function (data) {
-  _app.default.newMessage(data);
+_app.default.socket.on('error', function (data) {
+  console.log(data);
+  /* window.location.href = window.location.origin; */
 }); // !EMIT
 
 
-if (_app.default.getUser().room) _app.default.socket.emit('join', _app.default.getUser());
+_app.default.socket.on('connect', function () {
+  if (_app.default.getUser().creator) {
+    _app.default.socket.emit('createRoom', _app.default.getUser());
+  } else if (_app.default.getUser().room) {
+    _app.default.socket.emit('join', _app.default.getUser());
+  } else {
+    /* window.location.href = window.location.origin; */
+  }
+});
+
+window.socket = _app.default.socket;
 },{"./app":"app.js"}],"../../node_modules/parcel/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
 var OVERLAY_ID = '__parcel__error__overlay__';
@@ -1096,7 +1269,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "37157" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "46791" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

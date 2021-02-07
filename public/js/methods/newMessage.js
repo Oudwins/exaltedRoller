@@ -1,6 +1,6 @@
 export default function (data) {
   const message = {
-    user: data.user,
+    user: { id: data.user.id, name: data.user.name, color: data.user.color },
     timeStamp: data.timeStamp,
   };
   if (data.data.nRolled !== undefined) {

@@ -1,9 +1,12 @@
 const dayjs = require('dayjs');
 
-module.exports = (user, data) => {
+module.exports = (data, user, fullUser = false) => {
   const time = dayjs().format('HH:mm:ss');
+  const newUser = fullUser
+    ? user
+    : { name: user.name, color: user.color, id: user.id };
   return {
-    user,
+    user: newUser,
     timeStamp: time,
     data,
   };

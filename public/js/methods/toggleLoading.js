@@ -1,3 +1,3 @@
 export default function () {
-  this.loading = false;
+  this.loading = !this.loading;
 }

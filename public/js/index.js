@@ -1,18 +1,62 @@
 import vm from './app';
 
 // !ON
-// joining
-vm.socket.on('joined', (data) => {
+// ! User Actions
+function joinRoom(data) {
+  vm.updateUser(data.user);
+  window.history.replaceState(
+    null,
+    `D10 Roller - Room ${vm.getUser().room}`,
+    `/rooms?room=${vm.getUser().room}&name=${vm.getUser().name}`
+  );
+  vm.setColor(data.user.color);
   vm.toggleLoading();
   vm.newMessage(data);
-});
-vm.socket.on('color', (data) => {
-  vm.setColor(data);
+}
+
+// created
+vm.socket.on('roomCreated', joinRoom);
+// You joined
+vm.socket.on('youJoined', joinRoom);
+
+// You changeColor
+vm.socket.on('changeColor', (color) => {
+  vm.setColor(color);
+  vm.updateMessages({ color, userId: vm.getUser().id });
 });
 
-vm.socket.on('new_roll', (data) => {
-  vm.newMessage(data);
+//! Others Actions
+// Someone Joined
+vm.socket.on('some1Joined', vm.newMessage);
+
+vm.socket.on('new_roll', vm.newMessage);
+
+// handling User Disconnects
+vm.socket.on('userDisconnected', (data) => {
+  // set color of messages of person who left to standard color
+  const user = vm.updateMessages({ userId: data.id });
+  vm.newMessage({ ...data, user });
+  vm.socket.emit('colorReset', vm.getUser());
+});
+
+vm.socket.on('some1ChangeColor', (data) => {
+  vm.updateMessages({ color: data.color, userId: data.id });
+});
+
+vm.socket.on('error', (data) => {
+  console.log(data);
+  /* window.location.href = window.location.origin; */
 });
 
 // !EMIT
-if (vm.getUser().room) vm.socket.emit('join', vm.getUser());
+vm.socket.on('connect', () => {
+  if (vm.getUser().creator) {
+    vm.socket.emit('createRoom', vm.getUser());
+  } else if (vm.getUser().room) {
+    vm.socket.emit('join', vm.getUser());
+  } else {
+    /* window.location.href = window.location.origin; */
+  }
+});
+
+window.socket = vm.socket;

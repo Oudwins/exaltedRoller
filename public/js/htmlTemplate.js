@@ -8,7 +8,7 @@ export default `
       <section class="msgs">
         <table class="table table-sm msgs-table" >
           <tbody ref="table">
-            <tr v-for="message in messages" :style="{background: message.user.color.hex, color: message.user.color.text}">
+            <tr v-for="message in messages" :style="{background: colors[message.user.color].hex, color: colors[message.user.color].text}">
               <th scope="row">{{message.user.name}}</th>
               <td colspan="2"> <strong>{{message.text}}<span style="color:green;">{{message.successes !== undefined ? '[' + message.successes + ']' : ''}}</span><span style="color:red;">{{message.fumbles !== undefined ? '[' + message.fumbles + ']' : ''}}</span> </strong>
               </td>
@@ -18,6 +18,6 @@ export default `
         </table>
       </section>
       <section class="btns">
-        <button type="button" class="btn" :style="{color: user.color.text, background: user.color.hex}" :data-value="n" v-for="n in 12" @click.prevent="rollDice">{{ n < 10 ? '0' + n : n}}</button>
+        <button type="button" class="btn" :style="{color: colors[user.color].text,background: colors[user.color].hex}" :data-value="n" v-for="n in 12" @click.prevent="rollDice">{{ n < 10 ? '0' + n : n}}</button>
       </section>
 </main>`;
