@@ -10,7 +10,9 @@ export default `
           <tbody ref="table">
             <tr v-for="message in messages" :style="{background: colors[message.user.color].hex, color: colors[message.user.color].text}">
               <th scope="row">{{message.user.name}}</th>
-              <td colspan="2"> <strong>{{message.text}}<span style="color:green;">{{message.successes !== undefined ? '[' + message.successes + ']' : ''}}</span><span style="color:red;">{{message.fumbles !== undefined ? '[' + message.fumbles + ']' : ''}}</span> </strong>
+              <td colspan="2"> <strong>{{message.text}}<span class="r-success"> {{message.successes !== undefined ? '[' + message.successes + ']' : ''}}</span><span class="r-fumble">{{message.fumbles !== undefined ? '[' + message.fumbles + ']' : ''}}</span> </strong>
+              <a v-if="message.successes" href="#" class="has-tooltip" data-bs-toggle="tooltip" data-bs-html="true" :title="message.rolls" style="font-size: 1.2rem; padding: 0 0.5rem"> ?
+              </a>
               </td>
               <td>{{message.timeStamp}}</td>
             </tr>

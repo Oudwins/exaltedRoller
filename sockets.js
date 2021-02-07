@@ -34,10 +34,11 @@ module.exports = (server) => {
 
     socket.on('join', async (user) => {
       const clientsInRoom = await io.in(user.room).allSockets();
-      if (
+      /*       if (
         clientsInRoom.size === 0 ||
         clientsInRoom.size > process.env.MAX_ROOM_SIZE
-      )
+      ) */
+      if (clientsInRoom.size > process.env.MAX_ROOM_SIZE)
         return io.to(socket.id).emit(
           'error',
           `Cannot Join Room please try again later. Max Room size is 

@@ -1,9 +1,9 @@
 # General TODO
 
+- Tooltip dice rolled.
 - Add host settings
   - Kick -> cambia contraseña
   - Puede ver contraseña en todo momento
-- Tooltip dice rolled.
 - Get favicon
 - How to deal with showing different things to admin? idk
 

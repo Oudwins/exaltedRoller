@@ -906,7 +906,20 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.default = void 0;
-var _default = "\n<main id=\"app\" v-if=\"loading\">\n<div class=\"spinner-border\" role=\"status\" style=\"margin: auto auto; height: 10rem; width:10rem;\">\n  <span class=\"sr-only\" style=\"display:none\">Loading...</span>\n</div>\n</main>   \n<main id=\"app\" v-else>\n      <section class=\"msgs\">\n        <table class=\"table table-sm msgs-table\" >\n          <tbody ref=\"table\">\n            <tr v-for=\"message in messages\" :style=\"{background: colors[message.user.color].hex, color: colors[message.user.color].text}\">\n              <th scope=\"row\">{{message.user.name}}</th>\n              <td colspan=\"2\"> <strong>{{message.text}}<span style=\"color:green;\">{{message.successes !== undefined ? '[' + message.successes + ']' : ''}}</span><span style=\"color:red;\">{{message.fumbles !== undefined ? '[' + message.fumbles + ']' : ''}}</span> </strong>\n              </td>\n              <td>{{message.timeStamp}}</td>\n            </tr>\n          </tbody>\n        </table>\n      </section>\n      <section class=\"btns\">\n        <button type=\"button\" class=\"btn\" :style=\"{color: colors[user.color].text,background: colors[user.color].hex}\" :data-value=\"n\" v-for=\"n in 12\" @click.prevent=\"rollDice\">{{ n < 10 ? '0' + n : n}}</button>\n      </section>\n</main>";
+var _default = "\n<main id=\"app\" v-if=\"loading\">\n<div class=\"spinner-border\" role=\"status\" style=\"margin: auto auto; height: 10rem; width:10rem;\">\n  <span class=\"sr-only\" style=\"display:none\">Loading...</span>\n</div>\n</main>   \n<main id=\"app\" v-else>\n      <section class=\"msgs\">\n        <table class=\"table table-sm msgs-table\" >\n          <tbody ref=\"table\">\n            <tr v-for=\"message in messages\" :style=\"{background: colors[message.user.color].hex, color: colors[message.user.color].text}\">\n              <th scope=\"row\">{{message.user.name}}</th>\n              <td colspan=\"2\"> <strong>{{message.text}}<span class=\"r-success\"> {{message.successes !== undefined ? '[' + message.successes + ']' : ''}}</span><span class=\"r-fumble\">{{message.fumbles !== undefined ? '[' + message.fumbles + ']' : ''}}</span> </strong>\n              <a v-if=\"message.successes\" href=\"#\" class=\"has-tooltip\" data-bs-toggle=\"tooltip\" data-bs-html=\"true\" :title=\"message.rolls\" style=\"font-size: 1.2rem; padding: 0 0.5rem\"> ?\n              </a>\n              </td>\n              <td>{{message.timeStamp}}</td>\n            </tr>\n          </tbody>\n        </table>\n      </section>\n      <section class=\"btns\">\n        <button type=\"button\" class=\"btn\" :style=\"{color: colors[user.color].text,background: colors[user.color].hex}\" :data-value=\"n\" v-for=\"n in 12\" @click.prevent=\"rollDice\">{{ n < 10 ? '0' + n : n}}</button>\n      </section>\n</main>";
+exports.default = _default;
+},{}],"methods/utils/TwoDigitify.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+var _default = function _default(n) {
+  return n < 10 ? "0".concat(n) : n;
+};
+
 exports.default = _default;
 },{}],"methods/newMessage.js":[function(require,module,exports) {
 "use strict";
@@ -915,6 +928,10 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.default = _default;
+
+var _TwoDigitify = _interopRequireDefault(require("./utils/TwoDigitify"));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _default(data) {
   var message = {
@@ -928,16 +945,27 @@ function _default(data) {
 
   if (data.data.nRolled !== undefined) {
     // its a die roll
-    message.successes = data.data.successes;
-    message.fumbles = data.data.fumbles;
-    message.text = "Rolled ".concat(data.data.nRolled);
+    message.successes = (0, _TwoDigitify.default)(data.data.successes);
+    message.fumbles = (0, _TwoDigitify.default)(data.data.fumbles);
+    message.text = "Rolled ".concat((0, _TwoDigitify.default)(data.data.nRolled));
+    /* sort rolled */
+
+    data.data.rolled.sort(function (a, b) {
+      return b - a;
+    });
+    var rolls = data.data.rolled.map(function (el) {
+      if (el >= 7) return "<span class=\"r-success\">".concat(el, "</span>");
+      if (el === 1) return "<span class=\"r-fumble\">".concat(el, "</span>");
+      return "<span>".concat(el, "</span>");
+    });
+    message.rolls = "[".concat(rolls.join(','), "]");
   } else {
     message.text = data.data;
   }
 
   this.messages.push(message);
 }
-},{}],"methods/setColor.js":[function(require,module,exports) {
+},{"./utils/TwoDigitify":"methods/utils/TwoDigitify.js"}],"methods/setColor.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -1162,12 +1190,34 @@ var vm = new Vue({
 });
 var _default = vm;
 exports.default = _default;
-},{"qs":"../../node_modules/qs/lib/index.js","./htmlTemplate":"htmlTemplate.js","./methods/newMessage":"methods/newMessage.js","./methods/setColor":"methods/setColor.js","./methods/toggleLoading":"methods/toggleLoading.js","./methods/getUser":"methods/getUser.js","./methods/rollDice":"methods/rollDice.js","./methods/getColor":"methods/getColor.js","./methods/updateUser":"methods/updateUser.js","./methods/updateMessages":"methods/updateMessages.js","./data/colors":"data/colors.js"}],"index.js":[function(require,module,exports) {
+},{"qs":"../../node_modules/qs/lib/index.js","./htmlTemplate":"htmlTemplate.js","./methods/newMessage":"methods/newMessage.js","./methods/setColor":"methods/setColor.js","./methods/toggleLoading":"methods/toggleLoading.js","./methods/getUser":"methods/getUser.js","./methods/rollDice":"methods/rollDice.js","./methods/getColor":"methods/getColor.js","./methods/updateUser":"methods/updateUser.js","./methods/updateMessages":"methods/updateMessages.js","./data/colors":"data/colors.js"}],"tooltips.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+var tooltips = new bootstrap.Tooltip(document.body, {
+  selector: '.has-tooltip'
+  /*   template: `'<div class="tooltip" role="tooltip"><div class="tooltip-arrow"></div><div class="tooltip-inner"></div></div>'`, */
+
+});
+var _default = tooltips;
+exports.default = _default;
+},{}],"index.js":[function(require,module,exports) {
 "use strict";
 
 var _app = _interopRequireDefault(require("./app"));
 
+var _tooltips = _interopRequireDefault(require("./tooltips"));
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
+
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
 // !ON
 // ! User Actions
@@ -1212,7 +1262,9 @@ _app.default.socket.on('userDisconnected', function (data) {
     userId: data.id
   });
 
-  _app.default.newMessage({});
+  _app.default.newMessage(_objectSpread(_objectSpread({}, data), {}, {
+    user: user
+  }));
 
   _app.default.socket.emit('colorReset', _app.default.getUser());
 });
@@ -1241,7 +1293,7 @@ _app.default.socket.on('connect', function () {
 });
 
 window.socket = _app.default.socket;
-},{"./app":"app.js"}],"../../node_modules/parcel/src/builtins/hmr-runtime.js":[function(require,module,exports) {
+},{"./app":"app.js","./tooltips":"tooltips.js"}],"../../node_modules/parcel/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
 var OVERLAY_ID = '__parcel__error__overlay__';
 var OldModule = module.bundle.Module;
@@ -1269,7 +1321,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "46791" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "44299" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

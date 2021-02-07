@@ -2,7 +2,6 @@ module.exports = (nDice) => {
   const results = {
     successes: 0,
     fumbles: 0,
-    failures: 0,
     nRolled: nDice,
     rolled: [],
   };
@@ -18,8 +17,6 @@ module.exports = (nDice) => {
       }
     } else if (result === 1) {
       results.fumbles += 1;
-    } else {
-      results.failures += 1;
     }
   }
 

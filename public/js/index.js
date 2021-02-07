@@ -1,5 +1,5 @@
 import vm from './app';
-
+import tooltips from './tooltips';
 // !ON
 // ! User Actions
 function joinRoom(data) {
