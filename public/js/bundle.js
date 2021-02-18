@@ -906,7 +906,7 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.default = void 0;
-var _default = "\n<main id=\"app\" v-if=\"loading\">\n<div class=\"spinner-border\" role=\"status\" style=\"margin: auto auto; height: 10rem; width:10rem;\">\n  <span class=\"sr-only\" style=\"display:none\">Loading...</span>\n</div>\n</main>   \n<main id=\"app\" v-else>\n      <section class=\"msgs\">\n        <table class=\"table table-sm msgs-table\" >\n          <tbody ref=\"table\">\n            <tr v-for=\"message in messages\" :style=\"{background: colors[message.user.color].hex, color: colors[message.user.color].text}\">\n              <th scope=\"row\">{{message.user.name}}</th>\n              <td colspan=\"2\"> <strong>{{message.text}}<span class=\"r-success\"> {{message.successes !== undefined ? '[' + message.successes + ']' : ''}}</span><span class=\"r-fumble\">{{message.fumbles !== undefined ? '[' + message.fumbles + ']' : ''}}</span> </strong>\n              <a v-if=\"message.successes\" href=\"#\" class=\"has-tooltip\" data-bs-toggle=\"tooltip\" data-bs-html=\"true\" :title=\"message.rolls\" style=\"font-size: 1.2rem; padding: 0 0.5rem\"> ?\n              </a>\n              </td>\n              <td>{{message.timeStamp}}</td>\n            </tr>\n          </tbody>\n        </table>\n      </section>\n      <section class=\"btns\">\n        <button type=\"button\" class=\"btn\" :style=\"{color: colors[user.color].text,background: colors[user.color].hex}\" :data-value=\"n\" v-for=\"n in 12\" @click.prevent=\"rollDice\">{{ n < 10 ? '0' + n : n}}</button>\n      </section>\n</main>";
+var _default = "\n<main id=\"app\" v-if=\"!socket.connected\">\n<div class=\"spinner-border\" role=\"status\" style=\"margin: auto auto; height: 10rem; width:10rem;\">\n  <span class=\"sr-only\" style=\"display:none\">Loading...</span>\n</div>\n</main>   \n<main id=\"app\" v-else>\n      <section class=\"msgs\">\n        <table class=\"table table-sm msgs-table\" >\n          <tbody ref=\"table\">\n            <tr v-for=\"message in messages\" :style=\"{background: colors[message.user.color].hex, color: colors[message.user.color].text}\">\n              <th scope=\"row\">{{message.user.name}}</th>\n              <td colspan=\"2\"> <strong>{{message.text}}<span class=\"r-success\"> {{message.successes !== undefined ? '[' + message.successes + ']' : ''}}</span><span class=\"r-fumble\">{{message.fumbles !== undefined ? '[' + message.fumbles + ']' : ''}}</span> </strong>\n              <a v-if=\"message.successes\" href=\"#\" class=\"has-tooltip\" data-bs-toggle=\"tooltip\" data-bs-html=\"true\" :title=\"message.rolls\" style=\"font-size: 1.2rem; padding: 0 0.5rem\"> ?\n              </a>\n              </td>\n              <td>{{message.timeStamp}}</td>\n            </tr>\n          </tbody>\n        </table>\n      </section>\n      <section class=\"btns\">\n        <button type=\"button\" class=\"btn\" :style=\"{color: colors[user.color].text,background: colors[user.color].hex}\" :data-value=\"n\" v-for=\"n in 12\" @click.prevent=\"rollDice\">{{ n < 10 ? '0' + n : n}}</button>\n      </section>\n</main>";
 exports.default = _default;
 },{}],"methods/utils/TwoDigitify.js":[function(require,module,exports) {
 "use strict";
@@ -975,17 +975,6 @@ exports.default = _default;
 
 function _default(color) {
   this.user.color = color;
-}
-},{}],"methods/toggleLoading.js":[function(require,module,exports) {
-"use strict";
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.default = _default;
-
-function _default() {
-  this.loading = !this.loading;
 }
 },{}],"methods/getUser.js":[function(require,module,exports) {
 "use strict";
@@ -1127,8 +1116,6 @@ var _newMessage = _interopRequireDefault(require("./methods/newMessage"));
 
 var _setColor = _interopRequireDefault(require("./methods/setColor"));
 
-var _toggleLoading = _interopRequireDefault(require("./methods/toggleLoading"));
-
 var _getUser = _interopRequireDefault(require("./methods/getUser"));
 
 var _rollDice = _interopRequireDefault(require("./methods/rollDice"));
@@ -1173,7 +1160,6 @@ var vm = new Vue({
   template: _htmlTemplate.default,
   methods: {
     newMessage: _newMessage.default,
-    toggleLoading: _toggleLoading.default,
     setColor: _setColor.default,
     getUser: _getUser.default,
     rollDice: _rollDice.default,
@@ -1190,7 +1176,7 @@ var vm = new Vue({
 });
 var _default = vm;
 exports.default = _default;
-},{"qs":"../../node_modules/qs/lib/index.js","./htmlTemplate":"htmlTemplate.js","./methods/newMessage":"methods/newMessage.js","./methods/setColor":"methods/setColor.js","./methods/toggleLoading":"methods/toggleLoading.js","./methods/getUser":"methods/getUser.js","./methods/rollDice":"methods/rollDice.js","./methods/getColor":"methods/getColor.js","./methods/updateUser":"methods/updateUser.js","./methods/updateMessages":"methods/updateMessages.js","./data/colors":"data/colors.js"}],"tooltips.js":[function(require,module,exports) {
+},{"qs":"../../node_modules/qs/lib/index.js","./htmlTemplate":"htmlTemplate.js","./methods/newMessage":"methods/newMessage.js","./methods/setColor":"methods/setColor.js","./methods/getUser":"methods/getUser.js","./methods/rollDice":"methods/rollDice.js","./methods/getColor":"methods/getColor.js","./methods/updateUser":"methods/updateUser.js","./methods/updateMessages":"methods/updateMessages.js","./data/colors":"data/colors.js"}],"tooltips.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -1227,8 +1213,6 @@ function joinRoom(data) {
   window.history.replaceState(null, "D10 Roller - Room ".concat(_app.default.getUser().room), "/rooms?room=".concat(_app.default.getUser().room, "&name=").concat(_app.default.getUser().name));
 
   _app.default.setColor(data.user.color);
-
-  _app.default.toggleLoading();
 
   _app.default.newMessage(data);
 } // created
@@ -1321,7 +1305,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "44299" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "40559" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

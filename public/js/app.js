@@ -3,12 +3,12 @@ import htmlTemplate from './htmlTemplate';
 // vue methods
 import newMessage from './methods/newMessage';
 import setColor from './methods/setColor';
-import toggleLoading from './methods/toggleLoading';
 import getUser from './methods/getUser';
 import rollDice from './methods/rollDice';
 import getColor from './methods/getColor';
 import updateUser from './methods/updateUser';
 import updateMessages from './methods/updateMessages';
+import toggleLoading from './methods/toggleLoading';
 // colors array
 import colors from './data/colors';
 
@@ -38,13 +38,13 @@ const vm = new Vue({
   template: htmlTemplate,
   methods: {
     newMessage,
-    toggleLoading,
     setColor,
     getUser,
     rollDice,
     getColor,
     updateUser,
     updateMessages,
+    toggleLoading,
   },
   updated() {
     // scroll down to last messages

@@ -48,7 +48,7 @@ vm.socket.on('error', (data) => {
   /* window.location.href = window.location.origin; */
 });
 
-// !EMIT
+// !Connect & Disconnect
 vm.socket.on('connect', () => {
   if (vm.getUser().creator) {
     vm.socket.emit('createRoom', vm.getUser());
@@ -57,6 +57,10 @@ vm.socket.on('connect', () => {
   } else {
     /* window.location.href = window.location.origin; */
   }
+});
+
+vm.socket.on('disconnect', () => {
+  vm.toggleLoading();
 });
 
 window.socket = vm.socket;

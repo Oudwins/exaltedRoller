@@ -73,4 +73,9 @@ body {
 .r-success {
   color: green;
 }
+
+/* Tooltip */
+.tooltip-inner {
+  font-size: 1.3rem;
+}
 /*# sourceMappingURL=index.css.map */

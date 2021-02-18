@@ -1,5 +1,5 @@
 export default `
-<main id="app" v-if="loading">
+<main id="app" v-if="!socket.connected">
 <div class="spinner-border" role="status" style="margin: auto auto; height: 10rem; width:10rem;">
   <span class="sr-only" style="display:none">Loading...</span>
 </div>
